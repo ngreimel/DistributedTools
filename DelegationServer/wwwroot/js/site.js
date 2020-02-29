@@ -1,4 +1,4 @@
-﻿let userId = null
+let userId = null
 let isAdmin = false
 let currentItem = null
 
@@ -36,6 +36,7 @@ const updateState = async () => {
     updateUsers(data)
     updateCurrentItem(data)
     updateItemList(data)
+    updateDiscussedItemList(data)
 }
 
 const updateUsers = (data) => {
@@ -90,12 +91,25 @@ const buildVotes = (data) => {
 }
 
 const updateItemList = (data) => {
-    const rows = data.items.map(item => {
+    const rows = data.items.filter(x => !x.isVisible).map(item => {
         const clickableClass = isAdmin ? ' clickable' : ''
         const onClick = isAdmin ? ` onclick="selectItem('${item.itemId}')"` : ''
         return `<div class="item${clickableClass}"${onClick}>${item.description}</div>`
     })
     document.getElementById('itemList').innerHTML = rows.join('')
+}
+
+const updateDiscussedItemList = (data) => {
+    const rows = data.items.filter(x => x.isVisible).map(item => {
+        const votes = voteMap.map(v => ({...v, count: item.votes.filter(y => y.vote === v.vote).length}))
+        votes.sort((a,b) => a.count > b.count ? -1 : 1)
+        const maxCount = votes[0].count
+        const result = votes.filter(v => v.count == maxCount).map(v => v.display)
+        const clickableClass = isAdmin ? ' clickable' : ''
+        const onClick = isAdmin ? ` onclick="selectItem('${item.itemId}')"` : ''
+        return `<div class="item${clickableClass}"${onClick}>${item.description} (${result.join(', ')})</div>`
+    })
+    document.getElementById('discussedItemList').innerHTML = rows.join('')
 }
 
 const register = async (event) => {
