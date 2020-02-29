@@ -3,10 +3,21 @@ using System.Linq;
 
 namespace DelegationServer.Domain
 {
-    public class DelegationSession
+    public interface IDelegationSession
+    {
+        SessionData GetData();
+        Guid RegisterUser(string name, UserType type);
+        Guid AddItem(string description);
+        void Vote(Guid itemId, Guid userId, int vote);
+        void MakeVisible(Guid itemId, Guid userId);
+        void SetCurrentItem(Guid itemId, Guid userId);
+    }
+
+    public class DelegationSession : IDelegationSession
     {
         private readonly IUserRepository userRepository;
         private readonly IItemRepository itemRepository;
+        private Guid currentItemId = Guid.Empty;
 
         public DelegationSession(IUserRepository userRepository, IItemRepository itemRepository)
         {
@@ -19,7 +30,8 @@ namespace DelegationServer.Domain
             return new SessionData
             {
                 Users = userRepository.GetAllUsers(),
-                Items = itemRepository.GetAllItems()
+                Items = itemRepository.GetAllItems(),
+                CurrentItemId = currentItemId
             };
         }
 
@@ -48,6 +60,15 @@ namespace DelegationServer.Domain
             if (user != null && user.Type == UserType.Admin)
             {
                 itemRepository.SetVisibility(itemId, true);
+            }
+        }
+
+        public void SetCurrentItem(Guid itemId, Guid userId)
+        {
+            var user = userRepository.GetAllUsers().FirstOrDefault(x => x.UserId == userId);
+            if (user != null && user.Type == UserType.Admin)
+            {
+                currentItemId = itemId;
             }
         }
     }

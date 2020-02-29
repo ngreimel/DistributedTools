@@ -90,5 +90,18 @@ namespace DelegationPokerUnitTests.Domain
             var result = classUnderTest.GetData();
             Assert.That(result.Items[0].IsVisible, Is.EqualTo(expectedVisibility));
         }
+        
+        [TestCase(UserType.Admin, true)]
+        [TestCase(UserType.Voter, false)]
+        public void When_selecting_current_item_only_an_admin_can_set_it(UserType type, bool expectedChange)
+        {
+            var itemId = classUnderTest.AddItem("Test item");
+            var user = classUnderTest.RegisterUser("Test user", type);
+
+            classUnderTest.SetCurrentItem(itemId, user);
+
+            var result = classUnderTest.GetData();
+            Assert.That(result.CurrentItemId, Is.EqualTo(expectedChange ? itemId : Guid.Empty));
+        }
     }
 }
