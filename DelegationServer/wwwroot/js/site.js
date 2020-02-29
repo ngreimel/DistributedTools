@@ -79,7 +79,7 @@ const buildVotes = (data) => {
             count: currentItem.votes.filter(v => v.vote == x.vote).length
         }))
         const totalVotes = currentItem.votes.length
-        return votes.map(x => {
+        const voteRows = votes.map(x => {
             const percent = Math.round(x.count / totalVotes * 100) / 100;
             const width = Math.round(500 * percent)
             return `<div>` +
@@ -88,6 +88,7 @@ const buildVotes = (data) => {
                 `<span class="vote-bar ${x.name}" style="width: ${width}px;">&nbsp;</span>` +
                 `</div>`
         }).join('')
+        return `<div class="vote-results">${voteRows}</div>`
     }
     return ''
 }

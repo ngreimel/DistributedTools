@@ -62,7 +62,11 @@ button:hover {
 }
 
 #current-item {
-  height: 200px;
+  height: 230px;
+}
+
+.vote-results {
+  margin-top: 20px;
 }
 
 .vote-display {
