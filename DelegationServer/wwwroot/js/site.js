@@ -1,4 +1,4 @@
-let userId = null
+﻿let userId = null
 let isAdmin = false
 let currentItem = null
 
@@ -24,10 +24,12 @@ const updateState = async () => {
     const user = data.users.find(x => x.userId === userId)
     if (user) {
         isAdmin = user.type === 1
-        if (isAdmin) {
+        if (isAdmin && currentItem && !currentItem.isVisible) {
             document.getElementById('displayVotes').classList.remove('hidden')
+        } else {
+            document.getElementById('displayVotes').classList.add('hidden')
         }
-        //document.getElementById('register').classList.add('hidden')
+        document.getElementById('register').classList.add('hidden')
         if (currentItem) {
             document.getElementById('cards').classList.remove('hidden')
         }
