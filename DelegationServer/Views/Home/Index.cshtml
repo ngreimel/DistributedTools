@@ -2,18 +2,44 @@
     ViewData["Title"] = "Delegation Poker";
 }
 
-<h1>Delegation Poker</h1>
+<h1>Decision Delegation Poker</h1>
 
-<div id="users">
-    Users go here
+<div class="content">
+    <div id="users"></div>
+
+    <div>
+        <div id="current-item">
+            Put the description here.
+        </div>
+
+        <div id="userControls">
+            <div id="register">
+                <input id="username" placeholder="Your name here" autocomplete="off"></input>
+                <button onclick="register(event)">Register</button>
+            </div>
+            <div id="cards" class="hidden">
+                Vote by picking a delegation level:
+                <div class="card-container">
+                    <div class="card tell" onclick="vote(1)"><p>Tell</p></div>
+                    <div class="card sell" onclick="vote(2)"><p>Sell</p></div>
+                    <div class="card consult" onclick="vote(3)"><p>Consult</p></div>
+                    <div class="card agree" onclick="vote(4)"><p>Agree</p></div>
+                    <div class="card advise" onclick="vote(5)"><p>Advise</p></div>
+                    <div class="card inquire" onclick="vote(6)"><p>Inquire</p></div>
+                    <div class="card delegate" onclick="vote(7)"><p>Delegate</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    Put the description here.
-</div>
-
-<div>
-    Put the cards here.
+<div class="content">
+    <div>
+        <h2>Decisions to Discuss</h2>
+        <input  id="newItemDescription" type="text" placeholder="Description" autocomplete="off"></input>
+        <button onclick="addItem()">Add Item</button>
+        <div id="itemList"></div>
+    </div>
 </div>
 
 @section Scripts {
