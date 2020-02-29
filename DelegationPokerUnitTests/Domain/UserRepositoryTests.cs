@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using DelegationPokerApi.Domain;
+using DelegationServer.Domain;
 using NUnit.Framework;
 
 namespace DelegationPokerUnitTests.Domain

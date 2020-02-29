@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DelegationPokerApi\DelegationPokerApi.csproj" />
+    <ProjectReference Include="..\DelegationServer\DelegationServer.csproj" />
   </ItemGroup>
 
 </Project>

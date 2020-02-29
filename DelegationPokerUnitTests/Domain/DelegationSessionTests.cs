@@ -1,5 +1,5 @@
 using System;
-using DelegationPokerApi.Domain;
+using DelegationServer.Domain;
 using NUnit.Framework;
 
 namespace DelegationPokerUnitTests.Domain
