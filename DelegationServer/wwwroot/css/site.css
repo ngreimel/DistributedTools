@@ -65,6 +65,24 @@ button:hover {
   height: 200px;
 }
 
+.vote-display {
+  display: inline-block;
+  width: 100px;
+}
+
+.vote-count {
+  display: inline-block;
+  width: 20px;
+}
+
+.vote-bar {
+  display: inline-block;
+}
+
+#displayVotes {
+  margin: 20px 0;
+}
+
 .card-container {
   display: flex;
   flex-display: row;
@@ -76,7 +94,7 @@ button:hover {
   border: 3px solid black;
   border-radius: 3px;
   margin-right: 5px;
-  margin-top: 15px;
+  margin-top: 25px;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;

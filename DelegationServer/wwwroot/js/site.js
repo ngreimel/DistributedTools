@@ -13,23 +13,20 @@ const voteMap = [
 ]
 
 const init = async () => {
-    console.log('init')
-
     userId = localStorage.getItem('userId')
-    console.log(userId)
-    
     setInterval(updateState, 1000)
-    //updateState()
 }
 
 const updateState = async () => {
     const data = await get('/api/state')
-    //console.log(data)
 
     currentItem = data.items.find(x => x.itemId === data.currentItemId)
     const user = data.users.find(x => x.userId === userId)
     if (user) {
         isAdmin = user.type === 1
+        if (isAdmin) {
+            document.getElementById('displayVotes').classList.remove('hidden')
+        }
         //document.getElementById('register').classList.add('hidden')
         if (currentItem) {
             document.getElementById('cards').classList.remove('hidden')
@@ -44,7 +41,7 @@ const updateState = async () => {
 const updateUsers = (data) => {
     const rows = data.users.map(user => {
         const currentUserClass = user.userId === userId ? ' current-user' : ''
-        const userVoted = currentItem && currentItem.votes.some(x => x.userId === userId)
+        const userVoted = currentItem && currentItem.votes.some(x => x.userId === user.userId)
         const votedClass = userVoted  ? ' voted' : ''
         return `<div class="user${currentUserClass}${votedClass}">${user.name}</div>`
     })
@@ -53,7 +50,9 @@ const updateUsers = (data) => {
 
 const updateCurrentItem = (data) => {
     if (currentItem) {
-        document.getElementById('current-item').innerHTML = currentItem.description
+        const currentItemHtml = currentItem.description + buildVotes(data)
+        document.getElementById('current-item').innerHTML = currentItemHtml
+        
         Array.from(document.getElementsByClassName('card')).forEach(x => {
             x.classList.remove('selected')
         })
@@ -61,14 +60,34 @@ const updateCurrentItem = (data) => {
         if (userVote) {
             var voteData = voteMap.find(x => x.vote === userVote.vote)
             if (voteData) {
-                document.getElementsByClassName(voteData.name)[0].classList.add('selected')    
+                document.getElementsByClassName(`card ${voteData.name}`)[0].classList.add('selected')    
             }
         }
     } else {
         const noItemSelected = `<span class="aside">No decision has been selected for discussion yet...</span>`
         document.getElementById('current-item').innerHTML = noItemSelected
     }
-} 
+}
+
+const buildVotes = (data) => {
+    if (currentItem.isVisible) {
+        const votes = voteMap.map(x => ({
+            ...x,
+            count: currentItem.votes.filter(v => v.vote == x.vote).length
+        }))
+        const totalVotes = currentItem.votes.length
+        return votes.map(x => {
+            const percent = Math.round(x.count / totalVotes * 100) / 100;
+            const width = Math.round(500 * percent)
+            return `<div>` +
+                `<span class="vote-display">${x.display}</span>` +
+                `<span class="vote-count">${x.count}</span>` +
+                `<span class="vote-bar ${x.name}" style="width: ${width}px;">&nbsp;</span>` +
+                `</div>`
+        }).join('')
+    }
+    return ''
+}
 
 const updateItemList = (data) => {
     const rows = data.items.map(item => {
@@ -97,9 +116,19 @@ const vote = async (value) => {
     })
 }
 
+const displayVotes = async () => {
+    await post('/api/make-visible', {
+        itemId: currentItem.itemId,
+        userId
+    })
+}
+
 const addItem = async () => {
-    const description = document.getElementById('newItemDescription').value
-    await post('/api/add-item', {description})
+    const element = document.getElementById('newItemDescription')
+    if (element.value) {
+        await post('/api/add-item', {description: element.value})
+        element.value = ''   
+    }
 }
 
 const selectItem = async (itemId) => {
