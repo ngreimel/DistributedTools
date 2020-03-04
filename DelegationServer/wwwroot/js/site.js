@@ -81,7 +81,7 @@ const buildVotes = (data) => {
         const totalVotes = currentItem.votes.length
         const voteRows = votes.map(x => {
             const percent = Math.round(x.count / totalVotes * 100) / 100;
-            const width = Math.round(500 * percent)
+            const width = Math.round(300 * percent)
             return `<div>` +
                 `<span class="vote-display">${x.display}</span>` +
                 `<span class="vote-count">${x.count}</span>` +

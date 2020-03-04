@@ -167,3 +167,23 @@ button:hover {
 #newItemDescription {
   width: 500px;
 }
+
+@media (max-width: 1000px) {
+  .content {
+    display: block;
+  }
+  
+  #users {
+    margin-bottom: 30px;
+  }
+  
+  .card {
+    width: 60px;
+    height: 75px;
+    font-size: .7em;
+  }
+  
+  .card p {
+    margin-top: 20px;
+  }
+}
