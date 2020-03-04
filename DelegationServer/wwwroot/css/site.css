@@ -62,7 +62,8 @@ button:hover {
 }
 
 #current-item {
-  height: 230px;
+  min-height: 230px;
+  margin-bottom: 20px;
 }
 
 .vote-results {
@@ -165,7 +166,8 @@ button:hover {
 }
 
 #newItemDescription {
-  width: 500px;
+  width: calc(100vw - 170px);
+  max-width: 500px;
 }
 
 @media (max-width: 1000px) {

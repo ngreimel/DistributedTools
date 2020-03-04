@@ -1,6 +1,8 @@
 ﻿let userId = null
 let isAdmin = false
 let currentItem = null
+let timeoutId = null
+let isUpdating = false
 
 const voteMap = [
     {vote: 1, name: 'tell', display: 'Tell'},
@@ -14,12 +16,16 @@ const voteMap = [
 
 const init = async () => {
     userId = localStorage.getItem('userId')
-    setInterval(updateState, 1000)
+    updateState()
 }
 
 const updateState = async () => {
+    if (isUpdating) {
+        return
+    }
+    isUpdating = true
+    
     const data = await get('/api/state')
-
     currentItem = data.items.find(x => x.itemId === data.currentItemId)
     const user = data.users.find(x => x.userId === userId)
     if (user) {
@@ -39,6 +45,12 @@ const updateState = async () => {
     updateCurrentItem(data)
     updateItemList(data)
     updateDiscussedItemList(data)
+    
+    if (timeoutId) {
+        clearTimeout(timeoutId)
+    }
+    timeoutId = setTimeout(updateState, 3000)
+    isUpdating = false
 }
 
 const updateUsers = (data) => {
@@ -81,7 +93,7 @@ const buildVotes = (data) => {
         const totalVotes = currentItem.votes.length
         const voteRows = votes.map(x => {
             const percent = Math.round(x.count / totalVotes * 100) / 100;
-            const width = Math.round(300 * percent)
+            const width = Math.round(250 * percent)
             return `<div>` +
                 `<span class="vote-display">${x.display}</span>` +
                 `<span class="vote-count">${x.count}</span>` +
@@ -159,13 +171,15 @@ const get = async (url) => {
 }
 
 const post = async (url, data) => {
-    return await makeRequest(url, {
+    var response = await makeRequest(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
+    updateState()
+    return response
 }
 
 const makeRequest = async (url, options) => {
