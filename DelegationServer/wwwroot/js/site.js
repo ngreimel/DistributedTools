@@ -155,7 +155,14 @@ const displayVotes = async () => {
 const addItem = async () => {
     const element = document.getElementById('newItemDescription')
     if (element.value) {
-        await post('/api/add-item', {description: element.value})
+        const descriptions = element.value.split('|')
+        for (let i = 0; i < descriptions.length; i++)
+        {
+            const description = descriptions[i].trim()
+            if (description.length > 0) {
+                await post('/api/add-item', { description })
+            }
+        }
         element.value = ''   
     }
 }
