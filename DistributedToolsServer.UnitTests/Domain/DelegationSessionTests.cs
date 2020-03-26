@@ -12,7 +12,7 @@ namespace DistributedToolsServer.UnitTests.Domain
         public void SetUp()
         {
             classUnderTest = new DelegationSession(
-                new UserRepository(),
+                new UserGroup(),
                 new ItemRepository());
         }
 

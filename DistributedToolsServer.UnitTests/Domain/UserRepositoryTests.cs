@@ -7,12 +7,12 @@ namespace DistributedToolsServer.UnitTests.Domain
 {
     public class UserRepositoryTests
     {
-        private UserRepository classUnderTest;
+        private UserGroup classUnderTest;
         
         [SetUp]
         public void SetUp()
         {
-            classUnderTest = new UserRepository();
+            classUnderTest = new UserGroup();
         }
         
         [Test]

@@ -15,13 +15,13 @@ namespace DistributedToolsServer.Domain
 
     public class DelegationSession : IDelegationSession
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserGroup userGroup;
         private readonly IItemRepository itemRepository;
         private Guid currentItemId = Guid.Empty;
 
-        public DelegationSession(IUserRepository userRepository, IItemRepository itemRepository)
+        public DelegationSession(IUserGroup userGroup, IItemRepository itemRepository)
         {
-            this.userRepository = userRepository;
+            this.userGroup = userGroup;
             this.itemRepository = itemRepository;
         }
 
@@ -29,7 +29,7 @@ namespace DistributedToolsServer.Domain
         {
             return new SessionData
             {
-                Users = userRepository.GetAllUsers(),
+                Users = userGroup.GetAllUsers(),
                 Items = itemRepository.GetAllItems(),
                 CurrentItemId = currentItemId
             };
@@ -37,7 +37,7 @@ namespace DistributedToolsServer.Domain
 
         public Guid RegisterUser(string name, UserType type)
         {
-            return userRepository.AddUser(name, type);
+            return userGroup.AddUser(name, type);
         }
 
         public Guid AddItem(string description)
@@ -48,7 +48,7 @@ namespace DistributedToolsServer.Domain
         public void Vote(Guid itemId, Guid userId, int vote)
         {
             var totalVotes = itemRepository.RegisterVote(itemId, userId, vote);
-            if (totalVotes == userRepository.GetAllUsers().Count)
+            if (totalVotes == userGroup.GetAllUsers().Count)
             {
                 itemRepository.SetVisibility(itemId, true);
             }
@@ -56,7 +56,7 @@ namespace DistributedToolsServer.Domain
 
         public void MakeVisible(Guid itemId, Guid userId)
         {
-            var user = userRepository.GetAllUsers().FirstOrDefault(x => x.UserId == userId);
+            var user = userGroup.GetAllUsers().FirstOrDefault(x => x.UserId == userId);
             if (user != null && user.Type == UserType.Admin)
             {
                 itemRepository.SetVisibility(itemId, true);
@@ -65,7 +65,7 @@ namespace DistributedToolsServer.Domain
 
         public void SetCurrentItem(Guid itemId, Guid userId)
         {
-            var user = userRepository.GetAllUsers().FirstOrDefault(x => x.UserId == userId);
+            var user = userGroup.GetAllUsers().FirstOrDefault(x => x.UserId == userId);
             if (user != null && user.Type == UserType.Admin)
             {
                 currentItemId = itemId;

@@ -20,7 +20,7 @@ namespace DistributedToolsServer
         {
             services.AddControllersWithViews();
             services.AddSingleton<IDelegationSession, DelegationSession>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserGroup, UserGroup>();
             services.AddTransient<IItemRepository, ItemRepository>();
         }
 

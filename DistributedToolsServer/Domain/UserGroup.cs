@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace DistributedToolsServer.Domain
 {
-    public interface IUserRepository
+    public interface IUserGroup
     {
         List<User> GetAllUsers();
         Guid AddUser(string name, UserType type);
         void RemoveUser(Guid userId);
     }
 
-    public class UserRepository : IUserRepository
+    public class UserGroup : IUserGroup
     {
         private readonly ConcurrentDictionary<Guid, User> Users = new ConcurrentDictionary<Guid, User>();
         
