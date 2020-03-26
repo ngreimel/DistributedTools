@@ -4,14 +4,14 @@ using NUnit.Framework;
 
 namespace DistributedToolsServer.UnitTests.Domain
 {
-    public class ItemRepositoryTests
+    public class DecisionDelegationItemGroupTests
     {
-        private ItemRepository classUnderTest;
+        private DecisionDelegationDecisionDelegationItemGroup classUnderTest;
         
         [SetUp]
         public void SetUp()
         {
-            classUnderTest = new ItemRepository();
+            classUnderTest = new DecisionDelegationDecisionDelegationItemGroup();
         }
 
         [Test]

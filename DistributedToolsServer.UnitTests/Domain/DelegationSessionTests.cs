@@ -13,7 +13,7 @@ namespace DistributedToolsServer.UnitTests.Domain
         {
             classUnderTest = new DelegationSession(
                 new UserGroup(),
-                new ItemRepository());
+                new DecisionDelegationDecisionDelegationItemGroup());
         }
 
         [Test]

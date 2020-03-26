@@ -5,20 +5,20 @@ using System.Linq;
 
 namespace DistributedToolsServer.Domain
 {
-    public interface IItemRepository
+    public interface IDecisionDelegationItemGroup
     {
-        List<Item> GetAllItems();
+        List<DecisionDelegationItem> GetAllItems();
         Guid AddItem(string description);
         void Remove(Guid itemId);
         int RegisterVote(Guid itemId, Guid userId, int vote);
         bool SetVisibility(Guid itemId, bool isVisible);
     }
 
-    public class ItemRepository : IItemRepository
+    public class DecisionDelegationDecisionDelegationItemGroup : IDecisionDelegationItemGroup
     {
-        private readonly ConcurrentDictionary<Guid, Item> items = new ConcurrentDictionary<Guid, Item>();
+        private readonly ConcurrentDictionary<Guid, DecisionDelegationItem> items = new ConcurrentDictionary<Guid, DecisionDelegationItem>();
         
-        public List<Item> GetAllItems()
+        public List<DecisionDelegationItem> GetAllItems()
         {
             return items.Values.ToList();
         }
@@ -26,7 +26,7 @@ namespace DistributedToolsServer.Domain
         public Guid AddItem(string description)
         {
             var itemId = Guid.NewGuid();
-            items[itemId] = new Item
+            items[itemId] = new DecisionDelegationItem
             {
                 ItemId = itemId,
                 Description = description

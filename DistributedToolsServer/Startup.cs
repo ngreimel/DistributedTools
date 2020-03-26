@@ -21,7 +21,7 @@ namespace DistributedToolsServer
             services.AddControllersWithViews();
             services.AddSingleton<IDelegationSession, DelegationSession>();
             services.AddTransient<IUserGroup, UserGroup>();
-            services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<IDecisionDelegationItemGroup, DecisionDelegationDecisionDelegationItemGroup>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

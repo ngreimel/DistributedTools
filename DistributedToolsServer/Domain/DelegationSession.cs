@@ -16,13 +16,13 @@ namespace DistributedToolsServer.Domain
     public class DelegationSession : IDelegationSession
     {
         private readonly IUserGroup userGroup;
-        private readonly IItemRepository itemRepository;
+        private readonly IDecisionDelegationItemGroup decisionDelegationItemGroup;
         private Guid currentItemId = Guid.Empty;
 
-        public DelegationSession(IUserGroup userGroup, IItemRepository itemRepository)
+        public DelegationSession(IUserGroup userGroup, IDecisionDelegationItemGroup decisionDelegationItemGroup)
         {
             this.userGroup = userGroup;
-            this.itemRepository = itemRepository;
+            this.decisionDelegationItemGroup = decisionDelegationItemGroup;
         }
 
         public SessionData GetData()
@@ -30,7 +30,7 @@ namespace DistributedToolsServer.Domain
             return new SessionData
             {
                 Users = userGroup.GetAllUsers(),
-                Items = itemRepository.GetAllItems(),
+                Items = decisionDelegationItemGroup.GetAllItems(),
                 CurrentItemId = currentItemId
             };
         }
@@ -42,15 +42,15 @@ namespace DistributedToolsServer.Domain
 
         public Guid AddItem(string description)
         {
-            return itemRepository.AddItem(description);
+            return decisionDelegationItemGroup.AddItem(description);
         }
 
         public void Vote(Guid itemId, Guid userId, int vote)
         {
-            var totalVotes = itemRepository.RegisterVote(itemId, userId, vote);
+            var totalVotes = decisionDelegationItemGroup.RegisterVote(itemId, userId, vote);
             if (totalVotes == userGroup.GetAllUsers().Count)
             {
-                itemRepository.SetVisibility(itemId, true);
+                decisionDelegationItemGroup.SetVisibility(itemId, true);
             }
         }
 
@@ -59,7 +59,7 @@ namespace DistributedToolsServer.Domain
             var user = userGroup.GetAllUsers().FirstOrDefault(x => x.UserId == userId);
             if (user != null && user.Type == UserType.Admin)
             {
-                itemRepository.SetVisibility(itemId, true);
+                decisionDelegationItemGroup.SetVisibility(itemId, true);
             }
         }
 
