@@ -3,6 +3,8 @@ let isAdmin = false
 let currentItem = null
 let timeoutId = null
 let isUpdating = false
+let roomCode = null
+let baseUrl = null
 
 const voteMap = [
     {vote: 1, name: 'tell', display: 'Tell'},
@@ -14,8 +16,11 @@ const voteMap = [
     {vote: 7, name: 'delegate', display: 'Delegate'}
 ]
 
-const init = async () => {
-    userId = localStorage.getItem('userId')
+const init = async (newRoomCode) => {
+    roomCode = newRoomCode
+    baseUrl = `/decision-delegation/${roomCode}`
+    console.log('baseUrl:', baseUrl)
+    userId = localStorage.getItem(`${roomCode}:userId`)
     updateState()
 }
 
@@ -25,7 +30,7 @@ const updateState = async () => {
     }
     isUpdating = true
 
-    const data = await get('/api/state')
+    const data = await get(`${baseUrl}/state`)
     currentItem = data.items.find(x => x.itemId === data.currentItemId)
     const user = data.users.find(x => x.userId === userId)
     if (user) {
@@ -130,15 +135,15 @@ const updateDiscussedItemList = (data) => {
 const register = async (event) => {
     const name = document.getElementById('username').value
     if (name) {
-        var url = event.altKey ? 'api/register-admin' : '/api/register'
+        var url = event.altKey ? `${baseUrl}/register-admin` : `${baseUrl}/register`
         const data = await post(url, {name})
         userId = data.userId
-        localStorage.setItem('userId', userId)
+        localStorage.setItem(`${roomCode}:userId`, userId)
     }
 }
 
 const vote = async (value) => {
-    await post('/api/vote', {
+    await post(`${baseUrl}/vote`, {
         itemId: currentItem.itemId,
         userId,
         vote: value
@@ -146,7 +151,7 @@ const vote = async (value) => {
 }
 
 const displayVotes = async () => {
-    await post('/api/make-visible', {
+    await post(`${baseUrl}/make-visible`, {
         itemId: currentItem.itemId,
         userId
     })
@@ -160,7 +165,7 @@ const addItem = async () => {
         {
             const description = descriptions[i].trim()
             if (description.length > 0) {
-                await post('/api/add-item', { description })
+                await post(`${baseUrl}/add-item`, { description })
             }
         }
         element.value = ''
@@ -168,7 +173,7 @@ const addItem = async () => {
 }
 
 const selectItem = async (itemId) => {
-    await post('/api/set-current-item', {itemId, userId})
+    await post(`${baseUrl}/set-current-item`, {itemId, userId})
 }
 
 const get = async (url) => {

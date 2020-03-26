@@ -19,7 +19,8 @@ namespace DistributedToolsServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSingleton<IDecisionDelegationSession, DecisionDecisionDelegationSession>();
+            services.AddSingleton<IRoomSessionRepository, RoomSessionRepository>();
+            services.AddTransient<IDecisionDelegationSession, DecisionDelegationSession>();
             services.AddTransient<IUserGroup, UserGroup>();
             services.AddTransient<IDecisionDelegationItemGroup, DecisionDelegationDecisionDelegationItemGroup>();
         }

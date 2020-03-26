@@ -13,13 +13,13 @@ namespace DistributedToolsServer.Domain
         void SetCurrentItem(Guid itemId, Guid userId);
     }
 
-    public class DecisionDecisionDelegationSession : IDecisionDelegationSession
+    public class DecisionDelegationSession : IDecisionDelegationSession
     {
         private readonly IUserGroup userGroup;
         private readonly IDecisionDelegationItemGroup decisionDelegationItemGroup;
         private Guid currentItemId = Guid.Empty;
 
-        public DecisionDecisionDelegationSession(IUserGroup userGroup, IDecisionDelegationItemGroup decisionDelegationItemGroup)
+        public DecisionDelegationSession(IUserGroup userGroup, IDecisionDelegationItemGroup decisionDelegationItemGroup)
         {
             this.userGroup = userGroup;
             this.decisionDelegationItemGroup = decisionDelegationItemGroup;
