@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace DistributedToolsServer.UnitTests.Domain
 {
-    public class UserRepositoryTests
+    public class UserGroupTests
     {
         private UserGroup classUnderTest;
         
@@ -19,6 +19,7 @@ namespace DistributedToolsServer.UnitTests.Domain
         public void When_there_are_no_users()
         {
             var result = classUnderTest.GetAllUsers();
+            Assert.That(result.Count, Is.EqualTo(0));
         }
 
         [Test]
