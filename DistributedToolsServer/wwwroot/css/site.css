@@ -1,71 +1,191 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+}
 
-a.navbar-brand {
-  white-space: normal;
+h1 {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  margin: 0 0 10px 0;
+}
+
+input {
+  font-size: 1em;
+}
+
+button {
+  cursor: pointer;
+  background-color: white;
+  color: darkblue;
+  border: 1px solid darkblue;
+  border-radius: 3px;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: lightblue;
+}
+
+.content {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+#users {
+  width: 200px;
+  margin-right: 20px;
+}
+
+.user {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin-bottom: 2px;
+  background-color: #333;
+  color: white;
+}
+
+.current-user {
+  font-weight: bold;
+}
+
+.voted {
+  background-color: green;
+}
+
+.hidden {
+  display: none;
+}
+
+#current-item {
+  min-height: 230px;
+  margin-bottom: 20px;
+}
+
+.vote-results {
+  margin-top: 20px;
+}
+
+.vote-display {
+  display: inline-block;
+  width: 100px;
+}
+
+.vote-count {
+  display: inline-block;
+  width: 20px;
+}
+
+.vote-bar {
+  display: inline-block;
+}
+
+#displayVotes {
+  margin: 20px 0;
+}
+
+.card-container {
+  display: flex;
+  flex-display: row;
+}
+
+.card {
+  width: 100px;
+  height: 130px;
+  border: 3px solid black;
+  border-radius: 3px;
+  margin-right: 5px;
+  margin-top: 25px;
   text-align: center;
-  word-break: break-all;
+  vertical-align: middle;
+  cursor: pointer;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+.tell {
+  background-color: hotpink;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.sell {
+  background-color: red;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.consult {
+  background-color: orange;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
+.agree {
+  background-color: yellow;
 }
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+
+.advise {
+  background-color: green;
+}
+
+.inquire {
+  background-color: steelblue;
+}
+
+.delegate {
+  background-color: mediumpurple;
+}
+
+.card.selected {
+  margin-top: 5px;
+}
+
+.card p {
+  background-color: white;
+  margin-top: 50px;
+  padding: 5px 2px;
+  user-select: none;
+}
+
+.item {
+  border: 1px solid black;
+  border-radius: 3px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  background-color: #ccc;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background-color: lightblue;
+}
+
+.aside {
+  color: #666;
+  font-style: italic;
+}
+
+#newItemDescription {
+  width: calc(100vw - 170px);
+  max-width: 500px;
+}
+
+@media (max-width: 1000px) {
+  .content {
+    display: block;
   }
-}
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
+  #users {
+    margin-bottom: 30px;
+  }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
+  .card {
+    width: 60px;
+    height: 75px;
+    font-size: .7em;
+  }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+  .card p {
+    margin-top: 20px;
+  }
 }
