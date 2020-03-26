@@ -19,7 +19,7 @@ namespace DistributedToolsServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSingleton<IDelegationSession, DelegationSession>();
+            services.AddSingleton<IDecisionDelegationSession, DecisionDecisionDelegationSession>();
             services.AddTransient<IUserGroup, UserGroup>();
             services.AddTransient<IDecisionDelegationItemGroup, DecisionDelegationDecisionDelegationItemGroup>();
         }

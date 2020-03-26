@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DistributedToolsServer.Domain
 {
-    public interface IDelegationSession
+    public interface IDecisionDelegationSession
     {
         SessionData GetData();
         Guid RegisterUser(string name, UserType type);
@@ -13,13 +13,13 @@ namespace DistributedToolsServer.Domain
         void SetCurrentItem(Guid itemId, Guid userId);
     }
 
-    public class DelegationSession : IDelegationSession
+    public class DecisionDecisionDelegationSession : IDecisionDelegationSession
     {
         private readonly IUserGroup userGroup;
         private readonly IDecisionDelegationItemGroup decisionDelegationItemGroup;
         private Guid currentItemId = Guid.Empty;
 
-        public DelegationSession(IUserGroup userGroup, IDecisionDelegationItemGroup decisionDelegationItemGroup)
+        public DecisionDecisionDelegationSession(IUserGroup userGroup, IDecisionDelegationItemGroup decisionDelegationItemGroup)
         {
             this.userGroup = userGroup;
             this.decisionDelegationItemGroup = decisionDelegationItemGroup;

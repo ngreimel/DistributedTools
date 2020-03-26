@@ -6,12 +6,12 @@ namespace DistributedToolsServer.UnitTests.Domain
 {
     public class DelegationSessionTests
     {
-        private DelegationSession classUnderTest;
+        private DecisionDecisionDelegationSession classUnderTest;
         
         [SetUp]
         public void SetUp()
         {
-            classUnderTest = new DelegationSession(
+            classUnderTest = new DecisionDecisionDelegationSession(
                 new UserGroup(),
                 new DecisionDelegationDecisionDelegationItemGroup());
         }

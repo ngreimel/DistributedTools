@@ -8,17 +8,17 @@ namespace DistributedToolsServer.Controllers
     [Route("api")]
     public class ApiController : ControllerBase
     {
-        private readonly IDelegationSession delegationSession;
+        private readonly IDecisionDelegationSession decisionDelegationSession;
 
-        public ApiController(IDelegationSession delegationSession)
+        public ApiController(IDecisionDelegationSession decisionDelegationSession)
         {
-            this.delegationSession = delegationSession;
+            this.decisionDelegationSession = decisionDelegationSession;
         }
 
         [HttpGet("state")]
         public IActionResult GetState()
         {
-            var data = delegationSession.GetData();
+            var data = decisionDelegationSession.GetData();
             return Ok(new
             {
                 data.Users,
@@ -42,42 +42,42 @@ namespace DistributedToolsServer.Controllers
         [HttpPost("register")]
         public IActionResult RegisterVoter([FromBody] UserRegistrationRequest request)
         {
-            var userId = delegationSession.RegisterUser(request.Name, UserType.Voter);
+            var userId = decisionDelegationSession.RegisterUser(request.Name, UserType.Voter);
             return Ok(new { userId });
         }
         
         [HttpPost("register-admin")]
         public IActionResult RegisterAdmin([FromBody] UserRegistrationRequest request)
         {
-            var userId = delegationSession.RegisterUser(request.Name, UserType.Admin);
+            var userId = decisionDelegationSession.RegisterUser(request.Name, UserType.Admin);
             return Ok(new { userId });
         }
         
         [HttpPost("add-item")]
         public IActionResult AddItem([FromBody] AddItemRequest request)
         {
-            delegationSession.AddItem(request.Description);
+            decisionDelegationSession.AddItem(request.Description);
             return Ok(new {});
         }
         
         [HttpPost("set-current-item")]
         public IActionResult SetCurrentItem([FromBody] SetCurrentItemRequest request)
         {
-            delegationSession.SetCurrentItem(request.ItemId, request.UserId);
+            decisionDelegationSession.SetCurrentItem(request.ItemId, request.UserId);
             return Ok(new {});
         }
         
         [HttpPost("vote")]
         public IActionResult Vote([FromBody] VoteRequest request)
         {
-            delegationSession.Vote(request.ItemId, request.UserId, request.Vote);
+            decisionDelegationSession.Vote(request.ItemId, request.UserId, request.Vote);
             return Ok(new {});
         }
         
         [HttpPost("make-visible")]
         public IActionResult MakeVisible([FromBody] MakeVisibleRequest request)
         {
-            delegationSession.MakeVisible(request.ItemId, request.UserId);
+            decisionDelegationSession.MakeVisible(request.ItemId, request.UserId);
             return Ok(new {});
         }
     }
