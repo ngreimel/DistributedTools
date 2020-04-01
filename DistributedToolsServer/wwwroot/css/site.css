@@ -5,8 +5,41 @@
   padding: 0;
 }
 
-h1 {
+a {
+  color: darkblue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+nav {
   background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 42px;
+}
+
+nav a {
+  color: white;
+}
+
+nav button {
+  color: white;
+  border: 1px solid white;
+}
+
+nav button:hover {
+  background-color: #999;
+}
+
+h1 {
+  background-color: #666;
   color: white;
   padding: 10px 20px;
   margin: 0 0 10px 0;
@@ -18,7 +51,7 @@ input {
 
 button {
   cursor: pointer;
-  background-color: white;
+  background-color: transparent;
   color: darkblue;
   border: 1px solid darkblue;
   border-radius: 3px;

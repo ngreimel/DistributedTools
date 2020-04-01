@@ -1,0 +1,19 @@
+﻿@model DistributedToolsServer.Domain.User
+
+@{
+    Layout = null;
+}
+
+<div class="registered-user">
+@if (Model == null)
+{
+    <form action="/register" method="post">
+        <input type="text" name="name" />
+        <button>Register</button>
+    </form>
+}
+else
+{
+    <div>@Model.Name</div>
+}
+</div>

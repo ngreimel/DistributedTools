@@ -1,8 +1,10 @@
 using DistributedToolsServer.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace DistributedToolsServer
@@ -19,7 +21,12 @@ namespace DistributedToolsServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddSingleton<IRoomSessionRepository, RoomSessionRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddTransient<ICurrentUserAccessor, CurrentUserAccessor>();
             services.AddTransient<IDecisionDelegationSession, DecisionDelegationSession>();
             services.AddTransient<IUserGroup, UserGroup>();
             services.AddTransient<IDecisionDelegationItemGroup, DecisionDelegationDecisionDelegationItemGroup>();
