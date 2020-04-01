@@ -1,8 +1,6 @@
 ﻿let userId = null
 let isAdmin = false
 let currentItem = null
-let timeoutId = null
-let isUpdating = false
 let roomCode = null
 let baseUrl = null
 
@@ -16,21 +14,21 @@ const voteMap = [
     {vote: 7, name: 'delegate', display: 'Delegate'}
 ]
 
-const init = async (newRoomCode, newUserId) => {
+const connection = new signalR.HubConnectionBuilder().withUrl("/decision-delegation-hub").build()
+connection.on("StateUpdate", (data) => {
+    updateState(data)
+})
+
+const init = (newRoomCode, newUserId) => {
     roomCode = newRoomCode
     baseUrl = `/decision-delegation/${roomCode}`
-    console.log('baseUrl:', baseUrl)
     userId = newUserId
-    updateState()
+    connection.start().then(() => {
+        connection.invoke("ConnectToRoom", roomCode)
+    })
 }
 
-const updateState = async () => {
-    if (isUpdating) {
-        return
-    }
-    isUpdating = true
-
-    const data = await get(`${baseUrl}/state`)
+const updateState = (data) => {
     currentItem = data.items.find(x => x.itemId === data.currentItemId)
     const user = data.users.find(x => x.userId === userId)
     if (user) {
@@ -56,12 +54,6 @@ const updateState = async () => {
     updateCurrentItem(data)
     updateItemList(data)
     updateDiscussedItemList(data)
-
-    if (timeoutId) {
-        clearTimeout(timeoutId)
-    }
-    timeoutId = setTimeout(updateState, 3000)
-    isUpdating = false
 }
 
 const updateUsers = (data) => {
@@ -138,26 +130,19 @@ const updateDiscussedItemList = (data) => {
     document.getElementById('discussedItemList').innerHTML = rows.join('')
 }
 
-const join = async (event) => {
-    const data = await post(`${baseUrl}/join`, {})
+const join = () => {
+    connection.invoke("Join", roomCode, userId)
 }
 
-const vote = async (value) => {
-    await post(`${baseUrl}/vote`, {
-        itemId: currentItem.itemId,
-        userId,
-        vote: value
-    })
+const vote = (value) => {
+    connection.invoke("Vote", roomCode, currentItem.itemId, userId, value)
 }
 
-const displayVotes = async () => {
-    await post(`${baseUrl}/make-visible`, {
-        itemId: currentItem.itemId,
-        userId
-    })
+const displayVotes = () => {
+    connection.invoke("MakeVisible", roomCode, currentItem.itemId, userId)
 }
 
-const addItem = async () => {
+const addItem = () => {
     const element = document.getElementById('newItemDescription')
     if (element.value) {
         const descriptions = element.value.split('|')
@@ -165,40 +150,13 @@ const addItem = async () => {
         {
             const description = descriptions[i].trim()
             if (description.length > 0) {
-                await post(`${baseUrl}/add-item`, { description })
+                connection.invoke("AddItem", roomCode, description)
             }
         }
         element.value = ''
     }
 }
 
-const selectItem = async (itemId) => {
-    await post(`${baseUrl}/set-current-item`, {itemId, userId})
-}
-
-const get = async (url) => {
-    return await makeRequest(url, {
-        method: 'GET'
-    })
-}
-
-const post = async (url, data) => {
-    var response = await makeRequest(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    updateState()
-    return response
-}
-
-const makeRequest = async (url, options) => {
-    var response = await fetch(url, {
-        ...options,
-        cache: 'no-cache',
-        referrerPolicy: 'no-referrer'
-    })
-    return await response.json()
+const selectItem = (itemId) => {
+    connection.invoke("SetCurrentItem", roomCode, itemId, userId)
 }
