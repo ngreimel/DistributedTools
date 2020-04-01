@@ -7,35 +7,33 @@ namespace DistributedToolsServer.Domain
 {
     public interface IUserGroup
     {
-        List<User> GetAllUsers();
-        Guid AddUser(string name, UserType type);
+        List<UserWithType> GetAllUsers();
+        void AddUser(User user, UserType type);
         void RemoveUser(Guid userId);
     }
 
     public class UserGroup : IUserGroup
     {
-        private readonly ConcurrentDictionary<Guid, User> Users = new ConcurrentDictionary<Guid, User>();
-        
-        public List<User> GetAllUsers()
+        private readonly ConcurrentDictionary<Guid, UserWithType> users = new ConcurrentDictionary<Guid, UserWithType>();
+
+        public List<UserWithType> GetAllUsers()
         {
-            return Users.Values.ToList();
+            return users.Values.ToList();
         }
 
-        public Guid AddUser(string name, UserType type)
+        public void AddUser(User user, UserType type)
         {
-            var userId = Guid.NewGuid();
-            Users[userId] = new User
+            users[user.UserId] = new UserWithType
             {
-                UserId = userId,
-                Name = name,
+                UserId = user.UserId,
+                Name = user.Name,
                 Type = type
             };
-            return userId;
         }
 
         public void RemoveUser(Guid userId)
         {
-            Users.TryRemove(userId, out var _);
+            users.TryRemove(userId, out var _);
         }
     }
 }

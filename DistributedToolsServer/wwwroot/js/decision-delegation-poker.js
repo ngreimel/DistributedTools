@@ -16,11 +16,11 @@ const voteMap = [
     {vote: 7, name: 'delegate', display: 'Delegate'}
 ]
 
-const init = async (newRoomCode) => {
+const init = async (newRoomCode, newUserId) => {
     roomCode = newRoomCode
     baseUrl = `/decision-delegation/${roomCode}`
     console.log('baseUrl:', baseUrl)
-    userId = localStorage.getItem(`${roomCode}:userId`)
+    userId = newUserId
     updateState()
 }
 
@@ -40,9 +40,15 @@ const updateState = async () => {
         } else {
             document.getElementById('displayVotes').classList.add('hidden')
         }
-        document.getElementById('register').classList.add('hidden')
+        document.getElementById('join').classList.add('hidden')
         if (currentItem) {
             document.getElementById('cards').classList.remove('hidden')
+        }
+    } else {
+        if (userId) {
+            document.getElementById('join').classList.remove('hidden')
+        } else {
+            document.getElementById('join').classList.add('hidden')
         }
     }
 
@@ -132,14 +138,9 @@ const updateDiscussedItemList = (data) => {
     document.getElementById('discussedItemList').innerHTML = rows.join('')
 }
 
-const register = async (event) => {
-    const name = document.getElementById('username').value
-    if (name) {
-        var url = event.altKey ? `${baseUrl}/register-admin` : `${baseUrl}/register`
-        const data = await post(url, {name})
-        userId = data.userId
-        localStorage.setItem(`${roomCode}:userId`, userId)
-    }
+const join = async (event) => {
+    const url = event.altKey ? `${baseUrl}/join-admin` : `${baseUrl}/join`
+    const data = await post(url, {})
 }
 
 const vote = async (value) => {

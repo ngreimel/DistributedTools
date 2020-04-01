@@ -6,7 +6,7 @@ namespace DistributedToolsServer.Domain
     public interface IDecisionDelegationSession
     {
         DecisionDelegationSessionData GetData();
-        Guid RegisterUser(string name, UserType type);
+        void AddUser(User user, UserType type);
         Guid AddItem(string description);
         void Vote(Guid itemId, Guid userId, int vote);
         void MakeVisible(Guid itemId, Guid userId);
@@ -35,9 +35,9 @@ namespace DistributedToolsServer.Domain
             };
         }
 
-        public Guid RegisterUser(string name, UserType type)
+        public void AddUser(User user, UserType type)
         {
-            return userGroup.AddUser(name, type);
+            userGroup.AddUser(user, type);
         }
 
         public Guid AddItem(string description)

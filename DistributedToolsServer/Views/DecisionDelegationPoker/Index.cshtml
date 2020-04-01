@@ -1,4 +1,4 @@
-@model string
+@model DistributedToolsServer.Models.RoomCodeAndUser
 @{
     ViewData["Title"] = "Delegation Poker";
 }
@@ -14,9 +14,8 @@
         </div>
 
         <div id="userControls">
-            <div id="register">
-                <input id="username" placeholder="Your name here" autocomplete="off"></input>
-                <button onclick="register(event)">Register</button>
+            <div id="join">
+                <button onclick="join(event)">Join</button>
             </div>
             <div id="displayVotes" class="hidden">
                 <button onclick="displayVotes()">Display Votes</button>
@@ -55,7 +54,6 @@
 @section Scripts {
     <script type="text/javascript" src="~/js/decision-delegation-poker.js"></script>
     <script>
-        init('@Model')
+        init('@Model.RoomCode', '@Model.UserId.ToString()')
     </script>
 }
-    

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DistributedToolsServer.Domain;
 using DistributedToolsServer.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,18 @@ namespace DistributedToolsServer.Controllers
     public class DecisionDelegationPokerController : Controller
     {
         private readonly IRoomSessionRepository roomSessionRepository;
+        private readonly ICurrentUserAccessor currentUserAccessor;
 
-        public DecisionDelegationPokerController(IRoomSessionRepository roomSessionRepository)
+        public DecisionDelegationPokerController(IRoomSessionRepository roomSessionRepository, ICurrentUserAccessor currentUserAccessor)
         {
             this.roomSessionRepository = roomSessionRepository;
+            this.currentUserAccessor = currentUserAccessor;
         }
 
         [Route("")]
         public IActionResult Index(string roomCode)
         {
-            return View("Index", roomCode);
+            return View("Index", new RoomCodeAndUser(roomCode, currentUserAccessor.GetCurrentUser()?.UserId));
         }
 
         private IDecisionDelegationSession getSession(string roomCode)
@@ -56,18 +59,28 @@ namespace DistributedToolsServer.Controllers
             });
         }
 
-        [HttpPost("register")]
-        public IActionResult RegisterVoter(string roomCode, [FromBody] UserRegistrationRequest request)
+        [HttpPost("join")]
+        public IActionResult RegisterVoter(string roomCode)
         {
-            var userId = getSession(roomCode).RegisterUser(request.Name, UserType.Voter);
-            return Ok(new { userId });
+            var user = currentUserAccessor.GetCurrentUser();
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            getSession(roomCode).AddUser(user, UserType.Voter);
+            return Ok();
         }
 
-        [HttpPost("register-admin")]
-        public IActionResult RegisterAdmin(string roomCode, [FromBody] UserRegistrationRequest request)
+        [HttpPost("join-admin")]
+        public IActionResult RegisterAdmin(string roomCode)
         {
-            var userId = getSession(roomCode).RegisterUser(request.Name, UserType.Admin);
-            return Ok(new { userId });
+            var user = currentUserAccessor.GetCurrentUser();
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            getSession(roomCode).AddUser(user, UserType.Admin);
+            return Ok();
         }
 
         [HttpPost("add-item")]
