@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DistributedToolsServer.Controllers
 {
-    [Route("decision-delegation/{roomCode}")]
+    [Route("decision-delegation")]
     public class DecisionDelegationPokerController : Controller
     {
         private readonly IRoomSessionRepository roomSessionRepository;
@@ -20,15 +20,10 @@ namespace DistributedToolsServer.Controllers
             this.roomCodeGenerator = roomCodeGenerator;
         }
 
-        [Route("")]
+        [Route("{roomCode}")]
         public IActionResult Index(string roomCode)
         {
             return View("Index", new RoomCodeAndUser(roomCode, currentUserAccessor.GetCurrentUser()?.UserId));
-        }
-
-        private IDecisionDelegationSession getSession(string roomCode)
-        {
-            return roomSessionRepository.GetDecisionDelegationSession(roomCode);
         }
 
         [HttpPost("create-room")]
@@ -42,7 +37,7 @@ namespace DistributedToolsServer.Controllers
 
             var roomCode = roomCodeGenerator.Generate();
             roomSessionRepository.CreateSession(roomCode);
-            getSession(roomCode).AddUser(user, UserType.Admin);
+            roomSessionRepository.GetDecisionDelegationSession(roomCode).AddUser(user, UserType.Admin);
             return Redirect($"/decision-delegation/{roomCode}");
         }
 
@@ -50,7 +45,7 @@ namespace DistributedToolsServer.Controllers
         public IActionResult JoinRoom([FromForm] string roomCode)
         {
             var user = currentUserAccessor.GetCurrentUser();
-            var session = getSession(roomCode);
+            var session = roomSessionRepository.GetDecisionDelegationSession(roomCode);
             if (user == null || session == null)
             {
                 return BadRequest();
