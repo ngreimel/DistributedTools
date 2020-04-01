@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using DistributedToolsServer.Domain;
 using DistributedToolsServer.Models;
 using Microsoft.AspNetCore.Mvc;
