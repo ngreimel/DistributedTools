@@ -139,8 +139,7 @@ const updateDiscussedItemList = (data) => {
 }
 
 const join = async (event) => {
-    const url = event.altKey ? `${baseUrl}/join-admin` : `${baseUrl}/join`
-    const data = await post(url, {})
+    const data = await post(`${baseUrl}/join`, {})
 }
 
 const vote = async (value) => {

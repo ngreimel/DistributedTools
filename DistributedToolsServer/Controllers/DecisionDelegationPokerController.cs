@@ -90,7 +90,6 @@ namespace DistributedToolsServer.Controllers
             return Redirect($"/decision-delegation/{roomCode}");
         }
 
-
         [HttpPost("join")]
         public IActionResult RegisterVoter(string roomCode)
         {
@@ -100,18 +99,6 @@ namespace DistributedToolsServer.Controllers
                 return BadRequest();
             }
             getSession(roomCode).AddUser(user, UserType.Voter);
-            return Ok();
-        }
-
-        [HttpPost("join-admin")]
-        public IActionResult RegisterAdmin(string roomCode)
-        {
-            var user = currentUserAccessor.GetCurrentUser();
-            if (user == null)
-            {
-                return BadRequest();
-            }
-            getSession(roomCode).AddUser(user, UserType.Admin);
             return Ok();
         }
 
