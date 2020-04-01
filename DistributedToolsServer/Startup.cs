@@ -30,6 +30,7 @@ namespace DistributedToolsServer
             services.AddTransient<IDecisionDelegationSession, DecisionDelegationSession>();
             services.AddTransient<IUserGroup, UserGroup>();
             services.AddTransient<IDecisionDelegationItemGroup, DecisionDelegationDecisionDelegationItemGroup>();
+            services.AddTransient<IRoomCodeGenerator, RoomCodeGenerator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

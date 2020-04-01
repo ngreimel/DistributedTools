@@ -11,11 +11,13 @@ namespace DistributedToolsServer.Controllers
     {
         private readonly IRoomSessionRepository roomSessionRepository;
         private readonly ICurrentUserAccessor currentUserAccessor;
+        private readonly IRoomCodeGenerator roomCodeGenerator;
 
-        public DecisionDelegationPokerController(IRoomSessionRepository roomSessionRepository, ICurrentUserAccessor currentUserAccessor)
+        public DecisionDelegationPokerController(IRoomSessionRepository roomSessionRepository, ICurrentUserAccessor currentUserAccessor, IRoomCodeGenerator roomCodeGenerator)
         {
             this.roomSessionRepository = roomSessionRepository;
             this.currentUserAccessor = currentUserAccessor;
+            this.roomCodeGenerator = roomCodeGenerator;
         }
 
         [Route("")]
@@ -58,6 +60,36 @@ namespace DistributedToolsServer.Controllers
                 data.CurrentItemId
             });
         }
+
+        [HttpPost("create-room")]
+        public IActionResult CreateRoom()
+        {
+            var user = currentUserAccessor.GetCurrentUser();
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var roomCode = roomCodeGenerator.Generate();
+            roomSessionRepository.CreateSession(roomCode);
+            getSession(roomCode).AddUser(user, UserType.Admin);
+            return Redirect($"/decision-delegation/{roomCode}");
+        }
+
+        [HttpPost("join-room")]
+        public IActionResult JoinRoom([FromForm] string roomCode)
+        {
+            var user = currentUserAccessor.GetCurrentUser();
+            var session = getSession(roomCode);
+            if (user == null || session == null)
+            {
+                return BadRequest();
+            }
+
+            session.AddUser(user, UserType.Voter);
+            return Redirect($"/decision-delegation/{roomCode}");
+        }
+
 
         [HttpPost("join")]
         public IActionResult RegisterVoter(string roomCode)

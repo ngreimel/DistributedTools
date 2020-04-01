@@ -8,15 +8,17 @@ namespace DistributedToolsServer.Controllers
     public class HomeController : Controller
     {
         private readonly IUserRepository userRepository;
+        private readonly ICurrentUserAccessor currentUserAccessor;
 
-        public HomeController(IUserRepository userRepository)
+        public HomeController(IUserRepository userRepository, ICurrentUserAccessor currentUserAccessor)
         {
             this.userRepository = userRepository;
+            this.currentUserAccessor = currentUserAccessor;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(currentUserAccessor.GetCurrentUser());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

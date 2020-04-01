@@ -68,6 +68,15 @@ button:hover {
   flex-direction: row;
 }
 
+.create-or-join {
+  display: flex;
+  flex-direction: row;
+}
+
+.create-or-join > div {
+  margin: 0 20px;
+}
+
 #users {
   width: 200px;
   margin-right: 20px;
