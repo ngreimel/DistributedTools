@@ -2,7 +2,6 @@
 let isAdmin = false
 let currentItem = null
 let roomCode = null
-let baseUrl = null
 
 const voteMap = [
     {vote: 1, name: 'tell', display: 'Tell'},
@@ -21,7 +20,6 @@ connection.on("StateUpdate", (data) => {
 
 const init = (newRoomCode, newUserId) => {
     roomCode = newRoomCode
-    baseUrl = `/decision-delegation/${roomCode}`
     userId = newUserId
     connection.start().then(() => {
         connection.invoke("ConnectToRoom", roomCode)
