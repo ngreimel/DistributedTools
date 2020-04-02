@@ -67,6 +67,7 @@ namespace DistributedToolsServer.Domain
                 prompt = newPrompt;
                 votesVisible = false;
                 thumbVotes.Clear();
+                fistToFiveVotes.Clear();
             }
         }
 

@@ -121,12 +121,14 @@ namespace DistributedToolsServer.UnitTests.Domain
             var user = new User { UserId = Guid.NewGuid(), Name = "Tester" };
             classUnderTest.AddUser(user, UserType.Admin);
             classUnderTest.ThumbVote(user.UserId, ThumbVote.Sideways);
+            classUnderTest.FistToFiveVote(user.UserId, FistToFiveVote.Three);
             Assert.That(classUnderTest.GetData().ThumbVotes.Count, Is.EqualTo(1));
 
             classUnderTest.SetPrompt(user.UserId, "New prompt");
             var result = classUnderTest.GetData();
 
             Assert.That(result.ThumbVotes.Count, Is.EqualTo(0));
+            Assert.That(result.FistToFiveVotes.Count, Is.EqualTo(0));
         }
 
         [Test]
