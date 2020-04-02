@@ -1,0 +1,18 @@
+@model DistributedToolsServer.Models.RoomCodeAndUser
+@{
+    ViewData["Title"] = "Voting";
+}
+
+<h1>Voting</h1>
+
+<div class="content">
+    <div id="users"></div>
+</div>
+
+@section Scripts {
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script type="text/javascript" src="~/js/voting.js"></script>
+    <script>
+        init('@Model.RoomCode', '@Model.UserId.ToString()')
+    </script>
+}

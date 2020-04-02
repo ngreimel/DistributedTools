@@ -4,7 +4,18 @@ using System.Linq;
 
 namespace DistributedToolsServer.Domain
 {
-    public class VotingSession
+    public interface IVotingSession
+    {
+        VotingSessionData GetData();
+        void AddUser(User user, UserType type);
+        void ThumbVote(Guid userId, ThumbVote vote);
+        void SetPrompt(Guid userId, string newPrompt);
+        void MakeVotesVisible(Guid userId);
+        void SetVotingType(Guid userId, VoteType voteType);
+        void FistToFiveVote(Guid userId, FistToFiveVote vote);
+    }
+
+    public class VotingSession : IVotingSession
     {
         private readonly IUserGroup userGroup;
         private readonly ConcurrentDictionary<Guid, ThumbVote> thumbVotes = new ConcurrentDictionary<Guid, ThumbVote>();

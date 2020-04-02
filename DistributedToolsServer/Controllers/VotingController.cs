@@ -4,20 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DistributedToolsServer.Controllers
 {
-    [Route("decision-delegation")]
-    public class DecisionDelegationPokerController : Controller
+    [Route("voting")]
+    public class VotingController : Controller
     {
-        private readonly IRoomSessionRepository roomSessionRepository;
         private readonly ICurrentUserAccessor currentUserAccessor;
         private readonly IRoomCodeGenerator roomCodeGenerator;
+        private readonly IRoomSessionRepository roomSessionRepository;
 
-        public DecisionDelegationPokerController(IRoomSessionRepository roomSessionRepository,
-            ICurrentUserAccessor currentUserAccessor,
-            IRoomCodeGenerator roomCodeGenerator)
+        public VotingController(ICurrentUserAccessor currentUserAccessor,
+            IRoomCodeGenerator roomCodeGenerator,
+            IRoomSessionRepository roomSessionRepository)
         {
+            this.roomCodeGenerator = roomCodeGenerator;
             this.roomSessionRepository = roomSessionRepository;
             this.currentUserAccessor = currentUserAccessor;
-            this.roomCodeGenerator = roomCodeGenerator;
         }
 
         [Route("{roomCode}")]
@@ -36,23 +36,23 @@ namespace DistributedToolsServer.Controllers
             }
 
             var roomCode = roomCodeGenerator.Generate();
-            roomSessionRepository.CreateDecisionDelegationSession(roomCode);
-            roomSessionRepository.GetDecisionDelegationSession(roomCode).AddUser(user, UserType.Admin);
-            return Redirect($"/decision-delegation/{roomCode}");
+            roomSessionRepository.CreateVotingSession(roomCode);
+            roomSessionRepository.GetVotingSession(roomCode).AddUser(user, UserType.Admin);
+            return Redirect($"/voting/{roomCode}");
         }
 
         [HttpPost("join-room")]
         public IActionResult JoinRoom([FromForm] string roomCode)
         {
             var user = currentUserAccessor.GetCurrentUser();
-            var session = roomSessionRepository.GetDecisionDelegationSession(roomCode);
+            var session = roomSessionRepository.GetVotingSession(roomCode);
             if (user == null || session == null)
             {
                 return BadRequest();
             }
 
             session.AddUser(user, UserType.Voter);
-            return Redirect($"/decision-delegation/{roomCode}");
+            return Redirect($"/voting/{roomCode}");
         }
     }
 }

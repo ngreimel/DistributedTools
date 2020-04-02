@@ -32,6 +32,8 @@ namespace DistributedToolsServer
             services.AddTransient<IDecisionDelegationItemGroup, DecisionDelegationDecisionDelegationItemGroup>();
             services.AddTransient<IRoomCodeGenerator, RoomCodeGenerator>();
             services.AddTransient<IDecisionDelegationDataMapper, DecisionDelegationDataMapper>();
+            services.AddTransient<IVotingSession, VotingSession>();
+            services.AddTransient<IVotingSessionDataMapper, VotingSessionDataMapper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -52,6 +54,7 @@ namespace DistributedToolsServer
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<DecisionDelegationHub>("/decision-delegation-hub");
+                endpoints.MapHub<VotingHub>("/voting-hub");
             });
         }
     }
