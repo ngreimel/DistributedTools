@@ -23,6 +23,11 @@ namespace DistributedToolsServer.Controllers
         [Route("{roomCode}")]
         public IActionResult Index(string roomCode)
         {
+            var session = roomSessionRepository.GetDecisionDelegationSession(roomCode);
+            if (session == null)
+            {
+                return View("InvalidRoom");
+            }
             return View("Index", new RoomCodeAndUser(roomCode, currentUserAccessor.GetCurrentUser()?.UserId));
         }
 
