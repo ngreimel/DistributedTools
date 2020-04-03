@@ -28,6 +28,7 @@ namespace DistributedToolsServer.Controllers
             {
                 return View("InvalidRoom");
             }
+
             return View("Index", new RoomCodeAndUser(roomCode, currentUserAccessor.GetCurrentUser()?.UserId));
         }
 
@@ -37,7 +38,7 @@ namespace DistributedToolsServer.Controllers
             var user = currentUserAccessor.GetCurrentUser();
             if (user == null)
             {
-                return BadRequest();
+                return View("NotRegistered");
             }
 
             var roomCode = roomCodeGenerator.Generate();
@@ -50,10 +51,15 @@ namespace DistributedToolsServer.Controllers
         public IActionResult JoinRoom([FromForm] string roomCode)
         {
             var user = currentUserAccessor.GetCurrentUser();
-            var session = roomSessionRepository.GetVotingSession(roomCode);
-            if (user == null || session == null)
+            if (user == null)
             {
-                return BadRequest();
+                return View("NotRegistered");
+            }
+
+            var session = roomSessionRepository.GetVotingSession(roomCode);
+            if (session == null)
+            {
+                return View("InvalidRoom");
             }
 
             session.AddUser(user, UserType.Voter);
