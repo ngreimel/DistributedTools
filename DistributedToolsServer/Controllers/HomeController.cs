@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using DistributedToolsServer.Domain;
 using Microsoft.AspNetCore.Mvc;
 using DistributedToolsServer.Models;
@@ -32,7 +33,17 @@ namespace DistributedToolsServer.Controllers
         {
             var userId = userRepository.AddUser(request.Name);
             Response.Cookies.Append("el-dt-user-id", userId.ToString());
-            return Redirect(request.RedirectTo);
+            return Redirect(GetSafeRedirect(request.RedirectTo));
+        }
+
+        private string GetSafeRedirect(string redirect)
+        {
+            if (Uri.TryCreate(redirect, UriKind.Relative, out var _))
+            {
+                return redirect;
+            }
+
+            return "/";
         }
     }
 }
