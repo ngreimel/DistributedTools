@@ -23,13 +23,14 @@ namespace DistributedToolsServer.Controllers
         [Route("{roomCode}")]
         public IActionResult Index(string roomCode)
         {
-            var session = roomSessionRepository.GetVotingSession(roomCode);
+            var upperRoomCode = roomCode.ToUpper();
+            var session = roomSessionRepository.GetVotingSession(upperRoomCode);
             if (session == null)
             {
                 return View("InvalidRoom");
             }
 
-            return View("Index", new RoomCodeAndUser(roomCode, currentUserAccessor.GetCurrentUser()?.UserId));
+            return View("Index", new RoomCodeAndUser(upperRoomCode, currentUserAccessor.GetCurrentUser()?.UserId));
         }
 
         [HttpPost("create-room")]
@@ -50,20 +51,21 @@ namespace DistributedToolsServer.Controllers
         [HttpPost("join-room")]
         public IActionResult JoinRoom([FromForm] string roomCode)
         {
+            var upperRoomCode = roomCode.ToUpper();
             var user = currentUserAccessor.GetCurrentUser();
             if (user == null)
             {
                 return View("NotRegistered");
             }
 
-            var session = roomSessionRepository.GetVotingSession(roomCode);
+            var session = roomSessionRepository.GetVotingSession(upperRoomCode);
             if (session == null)
             {
                 return View("InvalidRoom");
             }
 
             session.AddUser(user, UserType.Voter);
-            return Redirect($"/voting/{roomCode}");
+            return Redirect($"/voting/{upperRoomCode}");
         }
     }
 }
