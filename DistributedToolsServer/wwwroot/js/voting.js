@@ -22,6 +22,7 @@ const init = (newRoomCode, newUserId) => {
 }
 
 const updateState = (data) => {
+    data.users.sort((a, b) => a.name.localeCompare(b))
     updateUsers(data)
     updatePrompt(data)
     updateVotingResults(data)
