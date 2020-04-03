@@ -92,7 +92,7 @@ const buildFistToFiveVotingResults = (data) => {
         { count: 0, users: [], emoji: '☝' },
         { count: 0, users: [], emoji: '✌' },
         { count: 0, users: [], emoji: '👌' },
-        { count: 0, users: [], emoji: '🤚' },
+        { count: 0, users: [], emoji: '🖖' },
         { count: 0, users: [], emoji: '🖐' }
     ])
 
