@@ -19,21 +19,20 @@ namespace DistributedToolsServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Scan(scan =>
+            {
+                scan.FromAssemblyOf<Startup>()
+                    .AddClasses()
+                    .AsMatchingInterface()
+                    .WithTransientLifetime();
+            });
+
             services.AddControllersWithViews();
             services.AddSignalR();
 
             services.AddSingleton<IRoomSessionRepository, RoomSessionRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddTransient<ICurrentUserAccessor, CurrentUserAccessor>();
-            services.AddTransient<IDecisionDelegationSession, DecisionDelegationSession>();
-            services.AddTransient<IUserGroup, UserGroup>();
-            services.AddTransient<IDecisionDelegationItemGroup, DecisionDelegationDecisionDelegationItemGroup>();
-            services.AddTransient<IRoomCodeGenerator, RoomCodeGenerator>();
-            services.AddTransient<IDecisionDelegationDataMapper, DecisionDelegationDataMapper>();
-            services.AddTransient<IVotingSession, VotingSession>();
-            services.AddTransient<IVotingSessionDataMapper, VotingSessionDataMapper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -14,10 +14,10 @@ namespace DistributedToolsServer.Domain
         bool SetVisibility(Guid itemId, bool isVisible);
     }
 
-    public class DecisionDelegationDecisionDelegationItemGroup : IDecisionDelegationItemGroup
+    public class DecisionDelegationItemGroup : IDecisionDelegationItemGroup
     {
         private readonly ConcurrentDictionary<Guid, DecisionDelegationItem> items = new ConcurrentDictionary<Guid, DecisionDelegationItem>();
-        
+
         public List<DecisionDelegationItem> GetAllItems()
         {
             return items.Values.ToList();
@@ -55,7 +55,7 @@ namespace DistributedToolsServer.Domain
             if (items.ContainsKey(itemId))
             {
                 items[itemId].IsVisible = isVisible;
-                return isVisible;    
+                return isVisible;
             }
 
             return false;
