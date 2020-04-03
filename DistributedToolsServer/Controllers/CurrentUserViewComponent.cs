@@ -1,4 +1,5 @@
 ﻿using DistributedToolsServer.Domain;
+using DistributedToolsServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DistributedToolsServer.Controllers
@@ -14,7 +15,11 @@ namespace DistributedToolsServer.Controllers
 
         public IViewComponentResult Invoke()
         {
-            return View(currentUserAccessor.GetCurrentUser());
+            return View(new UserAndPath
+            {
+                Path = Request.Path,
+                User = currentUserAccessor.GetCurrentUser()
+            });
         }
     }
 }

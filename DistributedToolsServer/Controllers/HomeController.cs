@@ -32,7 +32,7 @@ namespace DistributedToolsServer.Controllers
         {
             var userId = userRepository.AddUser(request.Name);
             Response.Cookies.Append("el-dt-user-id", userId.ToString());
-            return Redirect("/");
+            return Redirect(request.RedirectTo);
         }
     }
 }
