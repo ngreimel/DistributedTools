@@ -2,8 +2,8 @@
 {
     public enum ThumbVote
     {
-        Up,
-        Down,
-        Sideways
+        Up = 0,
+        Down = 1,
+        Sideways = 2
     }
 }

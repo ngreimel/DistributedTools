@@ -7,6 +7,35 @@
 
 <div class="content">
     <div id="users"></div>
+    <div>
+        <div id="prompt"></div>
+        <div id="votingResults"></div>
+        <div id="votingControls">
+            <div id="thumbVotingControls">
+                <button class="vote-button" onclick="thumbVote('Up')">👍</button>
+                <button class="vote-button rotated" onclick="thumbVote('Sideways')">👍</button>
+                <button class="vote-button" onclick="thumbVote('Down')">👎</button>
+            </div>
+            <div id="fistToFiveVotingControls">
+                <button class="vote-button" onclick="fistVote(0)">✊</button>
+                <button class="vote-button" onclick="fistVote(1)">☝</button>
+                <button class="vote-button" onclick="fistVote(2)">✌</button>
+                <button class="vote-button" onclick="fistVote(3)">👌</button>
+                <button class="vote-button" onclick="fistVote(4)">🤚</button>
+                <button class="vote-button" onclick="fistVote(5)">🖐️</button>
+            </div>
+            <div id="adminControls">
+                <div>
+                    <button onclick="showVotes()">Show Votes</button>
+                </div>
+                <div>
+                    <input type="text" id="newPrompt" placeholder="New prompt here"/>
+                    <button class="vote-button" onclick="newThumbVote()">👍</button>
+                    <button class="vote-button" onclick="newFistVote()">🖐️</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

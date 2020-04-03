@@ -231,3 +231,28 @@ button:hover {
     margin-top: 20px;
   }
 }
+
+.vote-button {
+  width: 44px;
+  height: 44px;
+}
+
+.rotated {
+  transform: rotate(-90deg);
+}
+
+.thumb-row > div {
+  display: inline-block;
+}
+
+#prompt {
+  min-height: 150px;
+}
+
+#votingControls {
+  margin-top: 20px;
+}
+
+#adminControls {
+  margin-top: 20px;
+}

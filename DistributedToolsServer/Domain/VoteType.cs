@@ -2,7 +2,7 @@
 {
     public enum VoteType
     {
-        Thumbs,
-        FistToFive
+        Thumbs = 0,
+        FistToFive = 1
     }
 }
