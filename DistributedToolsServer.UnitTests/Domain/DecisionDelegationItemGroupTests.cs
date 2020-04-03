@@ -6,12 +6,12 @@ namespace DistributedToolsServer.UnitTests.Domain
 {
     public class DecisionDelegationItemGroupTests
     {
-        private DecisionDelegationDecisionDelegationItemGroup classUnderTest;
-        
+        private DecisionDelegationItemGroup classUnderTest;
+
         [SetUp]
         public void SetUp()
         {
-            classUnderTest = new DecisionDelegationDecisionDelegationItemGroup();
+            classUnderTest = new DecisionDelegationItemGroup();
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace DistributedToolsServer.UnitTests.Domain
             Assert.That(items[0].Votes.Count, Is.EqualTo(0));
             Assert.That(items[0].IsVisible, Is.False);
         }
-        
+
         [Test]
         public void When_removing_an_item()
         {
@@ -72,14 +72,14 @@ namespace DistributedToolsServer.UnitTests.Domain
             classUnderTest.RegisterVote(itemId, userId1, 4);
             classUnderTest.RegisterVote(itemId, userId2, 5);
             var result = classUnderTest.RegisterVote(itemId, userId3, 4);
-            
+
             Assert.That(result, Is.EqualTo(3));
             var items = classUnderTest.GetAllItems();
             Assert.That(items[0].Votes[userId1], Is.EqualTo(4));
             Assert.That(items[0].Votes[userId2], Is.EqualTo(5));
             Assert.That(items[0].Votes[userId3], Is.EqualTo(4));
         }
-        
+
         [Test]
         public void When_updating_a_user_vote()
         {
@@ -98,7 +98,7 @@ namespace DistributedToolsServer.UnitTests.Domain
         public void When_registering_a_vote_for_an_unknown_item()
         {
             var result = classUnderTest.RegisterVote(Guid.NewGuid(), Guid.NewGuid(), 7);
-            
+
             Assert.That(result, Is.EqualTo(0));
         }
 
@@ -108,11 +108,11 @@ namespace DistributedToolsServer.UnitTests.Domain
             var itemId = classUnderTest.AddItem("Some item");
 
             var result = classUnderTest.SetVisibility(itemId, true);
-            
+
             Assert.That(result, Is.True);
-            
+
             result = classUnderTest.SetVisibility(itemId, false);
-            
+
             Assert.That(result, Is.False);
         }
 
@@ -120,7 +120,7 @@ namespace DistributedToolsServer.UnitTests.Domain
         public void When_updating_visibility_for_an_unknown_item()
         {
             var result = classUnderTest.SetVisibility(Guid.NewGuid(), true);
-            
+
             Assert.That(result, Is.False);
         }
     }
