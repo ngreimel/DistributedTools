@@ -23,7 +23,7 @@ namespace DistributedToolsServer.Controllers
         [Route("{roomCode}")]
         public IActionResult Index(string roomCode)
         {
-            var session = roomSessionRepository.GetDecisionDelegationSession(roomCode);
+            var session = roomSessionRepository.GetVotingSession(roomCode);
             if (session == null)
             {
                 return View("InvalidRoom");
