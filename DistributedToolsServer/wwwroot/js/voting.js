@@ -25,7 +25,7 @@ const updateState = (data) => {
     updateUsers(data)
     updatePrompt(data)
     updateVotingResults(data)
-    updateVotingControls(data)
+    updateControls(data)
 }
 
 const updateUsers = (data) => {
@@ -109,19 +109,22 @@ const getUserName = (data, userId) => {
     return user ? user.name : ''
 }
 
-const updateVotingControls = (data) => {
-    if (data.voteType === voteTypes.fistToFive) {
-        document.getElementById('fistToFiveVotingControls').classList.remove('hidden')
-        document.getElementById('thumbVotingControls').classList.add('hidden')
-    } else {
-        document.getElementById('thumbVotingControls').classList.remove('hidden')
-        document.getElementById('fistToFiveVotingControls').classList.add('hidden')
-    }
+const updateControls = (data) => {
+    const user = data.users.find(x => x.userId == userId)
+    const isFistToFive = data.voteType === voteTypes.fistToFive
 
-    if (isCurrentUserAdmin(data)) {
-        document.getElementById('adminControls').classList.remove('hidden')
+    setVisibility('joinControls', userId && !user)
+    setVisibility('votingControls', user)
+    setVisibility('thumbVotingControls', !isFistToFive)
+    setVisibility('fistToFiveVotingControls', isFistToFive)
+    setVisibility('adminControls', isCurrentUserAdmin(data))
+}
+
+const setVisibility = (elementId, shouldShow) => {
+    if (shouldShow) {
+        document.getElementById(elementId).classList.remove('hidden')
     } else {
-        document.getElementById('adminControls').classList.add('hidden')
+        document.getElementById(elementId).classList.add('hidden')
     }
 }
 
@@ -131,6 +134,10 @@ const isCurrentUserAdmin = (data) => {
         return user.type === adminUserType
     }
     return false
+}
+
+const join = () => {
+    connection.invoke("Join", roomCode, userId)
 }
 
 const thumbVoteMap = {

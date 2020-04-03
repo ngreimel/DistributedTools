@@ -8,11 +8,15 @@ namespace DistributedToolsServer.Domain
     {
         private readonly IRoomSessionRepository roomSessionRepository;
         private readonly IVotingSessionDataMapper votingSessionDataMapper;
+        private readonly IUserRepository userRepository;
 
-        public VotingHub(IRoomSessionRepository roomSessionRepository, IVotingSessionDataMapper votingSessionDataMapper)
+        public VotingHub(IRoomSessionRepository roomSessionRepository,
+            IVotingSessionDataMapper votingSessionDataMapper,
+            IUserRepository userRepository)
         {
             this.roomSessionRepository = roomSessionRepository;
             this.votingSessionDataMapper = votingSessionDataMapper;
+            this.userRepository = userRepository;
         }
 
         public async Task ConnectToRoom(string roomCode)
@@ -23,6 +27,15 @@ namespace DistributedToolsServer.Domain
             {
                 var data = votingSessionDataMapper.Map(session.GetData());
                 await Clients.Caller.SendAsync("StateUpdate", data);
+            }
+        }
+
+        public async Task Join(string roomCode, Guid userId)
+        {
+            var user = userRepository.GetUser(userId);
+            if (user != null)
+            {
+                await WithSession(roomCode, session => session.AddUser(user, UserType.Voter));
             }
         }
 
