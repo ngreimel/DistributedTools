@@ -31,6 +31,16 @@ namespace DistributedToolsServer.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromForm] UserRegistrationRequest request)
         {
+            if (string.IsNullOrEmpty(request.Name))
+            {
+                TempData["Error"] = "User must have a name";
+                if (request.RedirectTo == "/register")
+                {
+                    return RedirectToAction("Index");
+                }
+
+                return Redirect(request.RedirectTo);
+            }
             var userId = userRepository.AddUser(request.Name);
             Response.Cookies.Append("el-dt-user-id", userId.ToString());
             return Redirect(GetSafeRedirect(request.RedirectTo));

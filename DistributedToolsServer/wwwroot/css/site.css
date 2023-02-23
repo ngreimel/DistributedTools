@@ -256,3 +256,11 @@ button:hover {
 #adminControls {
   margin-top: 20px;
 }
+
+.warning {
+  color: white;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 5px;
+  background: red;
+}
